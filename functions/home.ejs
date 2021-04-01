@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Calculo Férias GP</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">  
+  <!-- Custom styles for this template -->
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+</head>
+
+<body> 
+    <form action="/calcular" method="POST" id="formPrincipal">
+        <div class="container">
+        <div id="login-intranet" class="form-group">
+            <label>Login Intranet</label>
+            <input type="text" class="form-control" name="login_intranet" id="login_intranet" required>
+        </div>
+        <div id="senha-intranet" class="form-group">
+            <label>Senha Intranet</label>
+            <input type="password" class="form-control" name="senha_intranet" id="senha_intranet" required> 
+        </div>
+        <div id="mes-ferias" class="form-group">
+            <label>Mes de Férias (mes do contracheque, Formato:"aaaa-mm", exemplo: 2020-10)</label>
+            <input type="text" class="form-control" name="mes_ferias" id="mes_ferias" required>
+        </div>
+        <div id="periodo-aquisitivo" class="form-group">
+            <label>Período Aquisitivo (mes anterior a contratação, Formato:"aaaa-mm", exemplo: 2020-02)</label>
+            <input type="text" class="form-control" name="periodo_aquisitivo" id="periodo_aquisitivo" required>
+        </div>
+        <input type="submit" class="btn btn-primary btn-lg" value="Calcular" id="calcularSubmit">
+        <div class="d-flex align-items-center" id="mySpinner" style="visibility: hidden;">
+            <strong>Loading...</strong>
+            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+          </div>
+    </form>
+    <br />
+    <h1> FAQs</h1>
+    <br />
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Motivação deste Projeto?
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <strong>Este projeto não está completo. </strong> Rezlizei este projeto para fins pessoais, com intuito de calcular minhas férias, porém tornei público para ajudar outros que queiram. Faltam alguns controles de erro, porém há total segurança quanto aos dados informados, nenhum dado é salvo em banco de dados.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingSix">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                Como funciona?
+              </button>
+            </h2>
+            <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  <strong>Simplesmente um robô. </strong> É utilizado um robô para a terefa de acessar a intranet da CDRJ e coletar os dados dos contracheques(WebScraping), os cálculos são realidados no lado servidor e renderizados no lado cliente.
+              </div>
+            </div>
+          </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Como os cálculos foram feitos?
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>Não é oficialmente divulgado pela empresa</strong> Foi calculado a média do número de horas de risco, horas de adicional noturno, horas de 100% e horas de 50% dos últimos 12 meses. De posse destas médias, se calcula o valor destas rúbricas com base no salário e adicional de tempo de serviço(ats) atuais, risco com fator de 40% e noturno com fator de 50%. O "extra período aquisitivo" é a soma de todas estas rúbricas, assim como o "abono pecuniário. O "adiantamento de férias" é dado pela terça parte da soma do salário base e ats. Finalmente a "gratificação de férias" é a metado da soma dos valores de "extra periodo aquisito", salário base e ats.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              Funciona para todos?
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>Não.</strong> Não há como desenvolver um robô que analise perfeitamente contracheques visto que não há como ter acesso a todos os contracheques para uma análise científica dos dados. Variações inesperadas podem ocorrer.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                A CDRJ pode bloquear este acesso?
+              </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <strong>Sim.</strong> Basta utilizar aquela checkbox que todos conhecemos, "Não sou um robô"
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                Calcula férias futuras?
+              </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <strong>Não.</strong> O resultado só é obtido caso o contracheque de férias ja esteja disponível na intranet!
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="text-center mt-3">Thiago Coelho</p>
+        <p class="font-weight-bold text-center font-italic"><strong>Software Developer</strong> © 2021</p>
+    </div>
+    
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+</body>
+
+<script>
+    $('#formPrincipal').submit(function() {
+        $("#mySpinner").css("visibility", 'visible');
+        //$("#formPrincipal input").prop("disabled", true);
+});
+    
+</script>
+
+</body>
+</html>
